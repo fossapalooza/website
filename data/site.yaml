@@ -1,0 +1,52 @@
+# Everything written on the page comes from this file.
+# Values in [BRACKETS] are placeholders that still need real content.
+
+event:
+  name: FOSSapalooza
+  intro: "An open source conference for the people who do the work: maintainers, builders, and everyone that ships code."
+  question: Not for policy makers.
+  date_long: 29 January 2027
+  city: Brussels
+  venue_name: Hotel Bedford
+  venue_address: Rue du Midi 135, Brussels
+  date_note: the day before FOSDEM
+  fosdem_dates: 30–31 January 2027
+
+nav:
+  - { label: Program, href: "#program" }
+  - { label: Sponsors, href: "#sponsors" }
+  - { label: Venue, href: "#venue" }
+
+# Put logo files in static/images/organizers/ and set "logo" to their path,
+# for example: logo: images/organizers/owasp.svg
+organizers:
+  - { name: AboutCode, url: "https://aboutcode.org", logo: "images/organizers/aboutcode.svg" }
+  - { name: OWASP, url: "https://owasp.org/", logo: "images/organizers/owasp.svg" }
+  - { name: Eclipse Open Regulatory Compliance Working Group, url: https://orcwg.org/", logo: "images/organizers/orcwg.svg" }
+  - { name: OpenChain, url: "https://openchainproject.org/", logo: "images/organizers/openchain.svg" }
+
+tickets:
+  url: "https://pretix.eu/FOSSapalooza/2027/"
+  items:
+    - { label: Community, price: Free,}
+    - { label: "Early-bird · until Dec 30", price: "€100", note: ["Your paid registration supports", "more community tickets!"], highlight: true  }
+    - { label: "Regular", price: "€200", note: ["Your paid registration supports", "more community tickets!"]}
+
+cfp:
+  show: true
+  url: "https://pretalx.com/fossapalooza-2026/"
+  heading: ["Got something", "to show us?"]
+  text: We want practical talks from people who build, maintain and ship open source. Submissions go through Pretalx.
+  facts:
+    - { label: Deadline, value: "Nov 30" }
+    - { label: Announced, value: "Dec 7" }
+    - { label: Formats, value: "Talks, panels, demos, and more" }
+
+sponsors:
+  text: Interested in sponsoring FOSSapalooza? Contact us for more information.
+
+contact:
+  email: "[CONTACT EMAIL]"
+  coc_url: "#"
+
+legal_entity: Legal entity: AboutCode Europe ASBL
