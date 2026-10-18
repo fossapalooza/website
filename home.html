@@ -1,0 +1,139 @@
+{{- $s := site.Data.site -}}
+{{- $e := $s.event -}}
+{{- $ticketsHref := "#tickets" -}}{{- with $s.tickets.url -}}{{- $ticketsHref = . -}}{{- end -}}
+{{- $cfpHref := "#cfp" -}}{{- with $s.cfp.url -}}{{- $cfpHref = . -}}{{- end -}}
+{{- $email := $s.contact.email -}}
+{{- $hasEmail := strings.Contains $email "@" -}}
+{{- $css := resources.Get "css/main.css" | minify | fingerprint -}}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ $e.name }} · {{ $e.date_long }} · {{ $e.city }}</title>
+  <meta name="description" content="{{ site.Params.description }}">
+  <meta name="theme-color" content="{{ site.Params.themeColor }}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ $e.name }} · {{ $e.date_long }} · {{ $e.city }}">
+  <meta property="og:description" content="{{ site.Params.description }}">
+  <meta property="og:url" content="{{ site.BaseURL }}">
+  <meta property="og:image" content="{{ "images/og.png" | absURL }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="{{ "images/favicon-32.png" | relURL }}" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="{{ "images/apple-touch-icon.png" | relURL }}">
+  <link rel="preload" href="{{ "fonts/archivo-latin-900-normal.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="hero" id="top">
+  <svg class="blob blob-gold" aria-hidden="true" viewBox="0 0 400 400"><path fill="#EEBE1B" d="M210 20C290 10 370 70 385 160C400 250 350 340 260 375C170 410 70 370 35 285C0 200 30 110 95 60C130 33 170 25 210 20Z"/></svg>
+  <svg class="blob blob-green-top" aria-hidden="true" viewBox="0 0 400 400"><path fill="#007844" d="M60 120C90 40 200 10 280 50C360 90 390 190 340 260C290 330 190 360 110 320C30 280 30 200 60 120Z"/></svg>
+  <svg class="blob blob-green-right" aria-hidden="true" viewBox="0 0 400 400"><path fill="#00804A" d="M200 30C260 30 320 90 330 170C340 250 300 330 220 360C140 390 60 340 50 250C40 160 120 30 200 30Z"/></svg>
+
+  <div class="wrap nav-row">
+    <a class="brand" href="#top" aria-label="{{ $e.name }} home"><img src="{{ "images/fossapalooza-horizontal.png" | relURL }}" alt="" width="573" height="84"></a>
+    <nav aria-label="Main">
+      <ul class="nav">
+        {{- range $s.nav }}
+        <li><a href="{{ .href }}">{{ .label }}</a></li>
+        {{- end }}
+        <li><a class="btn btn-white mono" href="{{ $ticketsHref }}">Get tickets</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="wrap hero-grid">
+    <h1 class="hero-logo"><img src="{{ "images/fossapalooza-stacked.png" | relURL }}" alt="{{ $e.name }}" width="1034" height="605"></h1>
+    <div class="hero-copy">
+      <p>{{ $e.intro }}</p>
+      <p class="strong">{{ $e.question }}</p>
+      <p class="hero-actions">
+        <a class="btn btn-outline mono" href="#cfp">Submit a talk <svg aria-hidden="true" viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z" fill="currentColor"/></svg></a>
+      </p>
+    </div>
+  </div>
+
+  <div class="wrap hero-date">
+    <p class="date-line">{{ $e.date_long }}</p>
+    <p class="city-line">{{ $e.city }}</p>
+    <p class="venue-line">{{ $e.venue_name }} · {{ $e.date_note }}</p>
+  </div>
+</header>
+
+<main id="main">
+  <section class="wrap section" id="organizers" aria-labelledby="organizers-h">
+    <h2 id="organizers-h">Co-organized by</h2>
+    <ul class="org-grid">
+      {{- range $o := $s.organizers }}
+      <li class="card">
+        {{- $inner := "" -}}
+        {{- if $o.logo -}}
+          {{- $inner = printf `<img src="%s" alt="%s">` ($o.logo | relURL) $o.name -}}
+        {{- else -}}
+          {{- $inner = printf `<span class="mono">[%s logo]</span>` $o.name -}}
+        {{- end -}}
+        {{- if $o.url }}
+        <a class="org-tile" href="{{ $o.url }}">{{ $inner | safeHTML }}</a>
+        {{- else }}
+        <div class="org-tile">{{ $inner | safeHTML }}</div>
+        {{- end }}
+      </li>
+      {{- end }}
+    </ul>
+  </section>
+
+  <section class="wrap section" id="tickets" aria-labelledby="tickets-h">
+    <h2 id="tickets-h">Tickets</h2>
+    <div class="tickets">
+      {{- range $s.tickets.items }}
+      <div class="card ticket{{ if .highlight }} ticket-hl{{ end }}">
+        <p class="mono label">{{ .label }}</p>
+        <p class="price">{{ .price }}</p>
+        {{- with .note }}
+        <p class="note">{{ . }}</p>
+        {{- end }}
+      </div>
+      {{- end }}
+    </div>
+    {{- with $s.tickets.url }}
+    <p><a class="btn btn-white mono tickets-btn" href="{{ . }}">Get tickets</a></p>
+    {{- end }}
+  </section>
+
+  <section class="wrap section" id="program" aria-labelledby="program-h">
+    <h2 id="program-h">Program</h2>
+    {{- with $s.cfp }}{{ if .show }}
+    <div class="card cfp" id="cfp">
+      <p class="mono label">Call for papers</p>
+      <h3 class="cfp-h">{{ range $i, $line := .heading }}{{ if $i }}<br>{{ end }}{{ $line }}{{ end }}</h3>
+      <p class="cfp-text">{{ .text }}</p>
+      <dl class="cfp-facts">
+        {{- range .facts }}
+        <div><dt class="mono">{{ .label }}</dt><dd>{{ .value }}</dd></div>
+        {{- end }}
+      </dl>
+      <a class="btn btn-green mono" href="{{ $cfpHref }}">Submit on Pretalx <svg aria-hidden="true" viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z" fill="currentColor"/></svg></a>
+    </div>
+    {{- end }}{{ end }}
+
+  <section class="wrap section" id="sponsors" aria-labelledby="sponsors-h">
+    <h2 id="sponsors-h">Sponsors</h2>
+    <p class="lead">{{ $s.sponsors.text }}</p>
+    <p><a class="btn btn-green mono" href="{{ if $hasEmail }}mailto:{{ $email }}{{ else }}#sponsors{{ end }}">Contact us</a></p>
+  </section>
+
+  <section class="wrap section" id="venue" aria-labelledby="venue-h">
+    <h2 id="venue-h">Getting there</h2>
+    <p class="lead lead-wide">{{ $e.venue_name }}, {{ $e.venue_address }}. The day before FOSDEM, {{ $e.fosdem_dates }}.</p>
+  </section>
+</main>
+
+<footer class="wrap footer">
+  <img src="{{ "images/fossapalooza-horizontal.png" | relURL }}" alt="{{ $e.name }}" width="573" height="84">
+  <span>{{ $s.legal_entity }} · {{ if $hasEmail }}<a href="mailto:{{ $email }}">{{ $email }}</a>{{ else }}{{ $email }}{{ end }}</span>
+  <span><a href="{{ $s.contact.coc_url }}">Code of conduct</a></span>
+</footer>
+</body>
+</html>
