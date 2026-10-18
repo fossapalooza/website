@@ -18,10 +18,10 @@ nav:
 # Put logo files in static/images/organizers/ and set "logo" to their path,
 # for example: logo: images/organizers/owasp.svg
 organizers:
-  - { name: AboutCode, url: "https://aboutcode.org", logo: "images/organizers/aboutcode.svg" }
-  - { name: OWASP, url: "https://owasp.org/", logo: "images/organizers/owasp.svg" }
-  - { name: Eclipse Open Regulatory Compliance Working Group, url: https://orcwg.org/", logo: "images/organizers/orcwg.svg" }
-  - { name: OpenChain, url: "https://openchainproject.org/", logo: "images/organizers/openchain.svg" }
+  - { name: AboutCode, url: "https://aboutcode.org", logo: "images/organizers/AboutCode.svg" }
+  - { name: OWASP, url: "https://owasp.org/", logo: "images/organizers/OWASP.svg" }
+  - { name: Eclipse Open Regulatory Compliance Working Group, url: https://orcwg.org/", logo: "images/organizers/ORCWG.svg" }
+  - { name: OpenChain, url: "https://openchainproject.org/", logo: "images/organizers/OpenChain.svg" }
 
 tickets:
   url: "https://pretix.eu/FOSSapalooza/2027/"
