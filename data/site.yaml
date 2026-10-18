@@ -9,6 +9,11 @@ event:
   venue_address: Rue du Midi 135, Brussels
   date_note: the day before FOSDEM
   fosdem_dates: 30–31 January 2027
+  # OpenStreetMap shown under "Getting there". Delete map_embed (or set it to "") to hide the map.
+  map_embed: "https://www.openstreetmap.org/export/embed?bbox=4.337090%2C50.839216%2C4.357090%2C50.849216&layer=mapnik&marker=50.844216%2C4.347090"
+  map_link: "https://www.openstreetmap.org/?mlat=50.844216&mlon=4.347090#map=16/50.844216/4.347090"
+  # Directions on the OSRM route planner: start left empty for the visitor, hotel as destination, walking (profile=2).
+  directions_link: "https://map.project-osrm.org/?z=16&center=50.844216%2C4.347090&loc=&loc=50.844216%2C4.347090&hl=en&profile=2"
 
 nav:
   - { label: Program, href: "#program" }
@@ -26,9 +31,9 @@ organizers:
 tickets:
   url: "https://pretix.eu/FOSSapalooza/2027/"
   items:
-    - { label: Community, price: Free,}
-    - { label: "Early-bird · until Dec 30", price: "€100", note: ["Your paid registration supports more community tickets!"], highlight: true  }
-    - { label: "Regular", price: "€200", note: "Your paid registration supports more community tickets!"}
+    - { label: Community, price: Free }
+    - { label: "Early-bird · until Dec 30", price: "€100", note: "Your paid registration supports more community tickets!", highlight: true }
+    - { label: "Regular", price: "€200", note: "Your paid registration supports more community tickets!" }
 
 cfp:
   show: true
