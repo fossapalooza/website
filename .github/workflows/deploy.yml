@@ -1,0 +1,121 @@
+name: Build and deploy to DreamHost
+
+# Runs on every push to main, or by hand from the Actions tab ("Run workflow").
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      HUGO_VERSION: 0.155.3
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Hugo
+        run: |
+          curl -sSL -o hugo.tar.gz "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz"
+          tar -xzf hugo.tar.gz hugo
+          sudo mv hugo /usr/local/bin/hugo
+          hugo version
+
+      - name: Build
+        run: hugo --minify --gc
+
+      # The built site is saved on the run's page as "fossapalooza-site",
+      # so it can also be downloaded and uploaded by hand (e.g. with FileZilla or Cyberduck).
+      - name: Save the built site for download
+        uses: actions/upload-artifact@v4
+        with:
+          name: fossapalooza-site
+          path: public/
+          retention-days: 30
+
+      - name: Check deploy settings
+        id: settings
+        env:
+          DREAMHOST_HOST: ${{ secrets.DREAMHOST_HOST }}
+          DREAMHOST_USER: ${{ secrets.DREAMHOST_USER }}
+          DREAMHOST_PATH: ${{ secrets.DREAMHOST_PATH }}
+          HAS_KEY: ${{ secrets.DREAMHOST_SSH_KEY != '' }}
+          HAS_PASSWORD: ${{ secrets.DREAMHOST_PASSWORD != '' }}
+        run: |
+          if [ -z "$DREAMHOST_HOST" ] || [ -z "$DREAMHOST_USER" ] || [ -z "$DREAMHOST_PATH" ]; then
+            echo "::warning::DreamHost secrets are not set yet, so the site was built but not deployed. See README."
+            echo "ready=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          case "${DREAMHOST_PATH%/}" in
+            ""|"/"|"~"|"."|".."|"~/") echo "::error::DREAMHOST_PATH must be your website folder, e.g. fossapalooza.eu"; exit 1 ;;
+          esac
+          if [ "$HAS_KEY" = "true" ]; then
+            echo "auth=key" >> "$GITHUB_OUTPUT"
+          elif [ "$HAS_PASSWORD" = "true" ]; then
+            echo "auth=password" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::Add either DREAMHOST_PASSWORD or DREAMHOST_SSH_KEY as a secret to deploy. See README."
+            echo "ready=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+
+      - name: Check the DreamHost server's identity
+        if: steps.settings.outputs.ready == 'true'
+        env:
+          DREAMHOST_HOST: ${{ secrets.DREAMHOST_HOST }}
+          KNOWN_HOSTS: ${{ secrets.DREAMHOST_KNOWN_HOSTS }}
+          FINGERPRINT: ${{ secrets.DREAMHOST_FINGERPRINT }}
+        run: |
+          install -m 700 -d ~/.ssh
+          if [ -n "$KNOWN_HOSTS" ]; then
+            printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          else
+            ssh-keyscan -T 20 "$DREAMHOST_HOST" > ~/.ssh/known_hosts 2>/dev/null || true
+            if [ ! -s ~/.ssh/known_hosts ]; then
+              echo "::error::Could not reach $DREAMHOST_HOST over SSH. Check that SSH is turned on for the user in the DreamHost panel."; exit 1
+            fi
+            if [ -n "$FINGERPRINT" ]; then
+              want=$(printf '%s' "$FINGERPRINT" | tr -d ' \r\n' | sed -E 's/^(SHA256|MD5)://I')
+              have=$( { ssh-keygen -lf ~/.ssh/known_hosts; ssh-keygen -E md5 -lf ~/.ssh/known_hosts; } | awk '{print $2}' | sed -E 's/^(SHA256|MD5)://')
+              if [ -z "$want" ] || [ -z "$have" ]; then
+                echo "::error::Could not compare fingerprints (DREAMHOST_FINGERPRINT looks empty, or the server sent no key)."; exit 1
+              fi
+              if printf '%s\n' "$have" | grep -qxiF "$want"; then
+                echo "The server's fingerprint matches DREAMHOST_FINGERPRINT."
+              else
+                echo "::error::The server's fingerprint does not match DREAMHOST_FINGERPRINT, so nothing was copied. Fingerprints seen:"
+                printf '%s\n' "$have"; exit 1
+              fi
+            else
+              echo "::warning::DREAMHOST_FINGERPRINT is not set, so the server's identity was not checked. See README."
+            fi
+          fi
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Copy the site to DreamHost
+        if: steps.settings.outputs.ready == 'true'
+        env:
+          AUTH: ${{ steps.settings.outputs.auth }}
+          DREAMHOST_HOST: ${{ secrets.DREAMHOST_HOST }}
+          DREAMHOST_USER: ${{ secrets.DREAMHOST_USER }}
+          DREAMHOST_PATH: ${{ secrets.DREAMHOST_PATH }}
+          SSH_KEY: ${{ secrets.DREAMHOST_SSH_KEY }}
+          SSHPASS: ${{ secrets.DREAMHOST_PASSWORD }}
+        run: |
+          if [ "$AUTH" = "key" ]; then
+            printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+            chmod 600 ~/.ssh/id_ed25519
+            RSH="ssh -i $HOME/.ssh/id_ed25519"
+          else
+            sudo apt-get update -qq && sudo apt-get install -y -qq sshpass > /dev/null
+            RSH="sshpass -e ssh -o PreferredAuthentications=password,keyboard-interactive -o PubkeyAuthentication=no"
+          fi
+          rsync -avz --delete --filter='protect .well-known/' -e "$RSH" \
+            public/ "${DREAMHOST_USER}@${DREAMHOST_HOST}:~/${DREAMHOST_PATH%/}/"
