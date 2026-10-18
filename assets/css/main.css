@@ -1,0 +1,191 @@
+/* FOSSapalooza one-page site. Colours come from the Canva logo palette.
+   Target: WCAG 2.2 level AA. Font sizes are in rem so they follow the reader's
+   browser text-size setting (1rem = 16px by default). */
+
+/* Fonts are self-hosted (static/fonts), so no requests go to Google.
+   Both families are open source under the SIL Open Font License 1.1. */
+@font-face { font-family: "Archivo"; font-style: normal; font-weight: 400; font-display: swap; src: url("../fonts/archivo-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Archivo"; font-style: normal; font-weight: 600; font-display: swap; src: url("../fonts/archivo-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Archivo"; font-style: normal; font-weight: 800; font-display: swap; src: url("../fonts/archivo-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: "Archivo"; font-style: normal; font-weight: 900; font-display: swap; src: url("../fonts/archivo-latin-900-normal.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 500; font-display: swap; src: url("../fonts/jetbrains-mono-latin-500-normal.woff2") format("woff2"); }
+
+:root {
+  --purple: #6E2D8A;        /* hero background */
+  --purple-deep: #5A2272;   /* page background */
+  --purple-card: #4A1A60;
+  --purple-line: #6A3482;
+  --purple-rule: #7A3E96;
+  --gold: #EEBE1B;
+  --green: #007844;
+  --green-dark: #00663A;
+  --green-text: #1FD17A;
+  --ink: #1A0A24;
+  --ink-nav: #2A0E38;
+  --lilac: #E4D3EE;
+  --white: #FFFFFF;
+  --sans: "Archivo", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--purple-deep);
+  color: var(--white);
+  font-family: var(--sans);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, p, ul, dl, dd { margin: 0; }
+ul { list-style: none; padding: 0; }
+img { display: block; max-width: 100%; height: auto; }
+
+a { color: var(--white); }
+a:hover { color: var(--gold); }
+/* Keyboard focus: gold ring on purple and green; dark ring on the gold CFP card. */
+a:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+.cfp a:focus-visible { outline-color: var(--ink); }
+
+.skip { position: absolute; left: -9999px; top: 0; }
+.skip:focus { left: 16px; top: 16px; z-index: 10; background: var(--white); color: var(--ink); padding: 8px 14px; border-radius: 8px; }
+
+.wrap { max-width: 1440px; margin: 0 auto; padding: 0 56px; }
+.mono { font-family: var(--mono); text-transform: uppercase; letter-spacing: .04em; font-weight: 500; }
+
+/* Buttons. The transparent border keeps button edges visible in Windows high-contrast mode. */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  min-height: 44px; padding: 10px 20px;
+  border: 2px solid transparent; border-radius: 999px;
+  text-decoration: none; font-size: .9375rem;
+}
+.btn svg { width: 12px; height: 12px; }
+.btn-white { background: var(--white); color: var(--ink-nav); }
+.btn-white:hover { background: var(--gold); color: var(--ink); }
+.btn-outline { border-color: var(--white); }
+.btn-outline:hover { border-color: var(--gold); }
+.btn-dark { background: var(--ink); color: var(--gold); padding: 12px 20px; }
+.btn-dark:hover { color: var(--white); }
+.btn-green { background: var(--green); color: var(--white); padding: 12px 20px; }
+.btn-green:hover { background: var(--green-dark); color: var(--white); }
+
+/* Hero */
+.hero { position: relative; overflow: hidden; background: var(--purple); min-height: 940px; }
+.blob { position: absolute; pointer-events: none; }
+.blob-gold { left: -150px; bottom: -190px; width: 600px; height: 600px; }
+.blob-green-top { left: 42%; top: -200px; width: 440px; height: 440px; }
+.blob-green-right { right: -170px; top: 250px; width: 560px; height: 560px; }
+
+.nav-row {
+  position: relative;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+  padding-top: 26px;
+}
+.brand { display: inline-block; padding: 8px 0; }
+.brand img { height: 28px; width: auto; }
+.nav { display: flex; align-items: center; flex-wrap: wrap; column-gap: 26px; row-gap: 4px; font-weight: 800; font-size: 1.0625rem; }
+/* Padding gives each text link a tap area of about 44px high (WCAG 2.5.8 asks for at least 24px). */
+.nav a:not(.btn) { display: inline-block; padding: 11px 2px; text-decoration: none; }
+.nav .btn { font-weight: 500; }
+
+.hero-grid { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 56px; padding-top: 96px; }
+.hero-logo { flex: 0 1 520px; }
+.hero-logo img { width: 100%; max-width: 520px; }
+.hero-copy { flex: 1 1 380px; max-width: 480px; font-size: 1.3125rem; line-height: 1.55; }
+.hero-copy .strong { font-weight: 800; margin-top: 16px; }
+.hero-actions { margin-top: 28px; }
+
+.hero-date { position: relative; text-align: right; padding-top: 70px; padding-bottom: 56px; }
+.date-line, .city-line { font-weight: 900; line-height: .95; text-transform: uppercase; letter-spacing: -.02em; }
+.date-line { font-size: clamp(2.5rem, 5.2vw, 4.5rem); }
+.city-line { font-size: clamp(3.75rem, 7.8vw, 6.75rem); }
+.venue-line { font-size: 1.125rem; font-weight: 600; margin-top: 10px; }
+
+/* Sections */
+.section { padding-top: 96px; }
+.section h2 { font-weight: 900; text-transform: uppercase; font-size: clamp(2.5rem, 4.6vw, 4rem); line-height: .95; letter-spacing: -.01em; }
+.card { background: var(--purple-card); border-radius: 22px; padding: 28px; }
+
+.org-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 28px; }
+.org-tile {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 120px; padding: 16px;
+  background: var(--white); border-radius: 14px; color: var(--purple-card); text-decoration: none;
+}
+.org-tile img { max-height: 80px; width: auto; object-fit: contain; }
+.org-tile .mono { font-size: .8125rem; text-align: center; overflow-wrap: anywhere; }
+
+.tickets { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 28px; }
+.ticket { flex: 1 1 300px; }
+.ticket .label { font-size: .8125rem; color: var(--gold); }
+.ticket-hl { background: var(--green); }
+.ticket-hl .label { color: var(--white); }
+.price { font-size: clamp(3.5rem, 6vw, 5.25rem); font-weight: 900; line-height: 1; margin-top: 10px; }
+.ticket .note { margin-top: 8px; font-weight: 600; }
+.tickets-btn { margin-top: 24px; }
+
+.cfp { margin-top: 28px; background: var(--gold); color: var(--ink); padding: 36px; }
+.cfp .label { font-size: .8125rem; }
+.cfp-h { font-size: clamp(2.5rem, 4.6vw, 4rem); font-weight: 900; line-height: .95; text-transform: uppercase; letter-spacing: -.02em; margin-top: 12px; }
+.cfp-text { font-size: 1.25rem; line-height: 1.55; margin-top: 16px; max-width: 640px; font-weight: 600; }
+.cfp-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 28px; }
+.cfp-facts dt { font-size: .75rem; }
+.cfp-facts dd { font-size: 1.375rem; font-weight: 900; margin-top: 4px; }
+.cfp .btn { margin-top: 28px; }
+
+.sub { font-size: .875rem; color: var(--gold); margin-top: 40px; }
+.muted { color: var(--lilac); }
+.schedule-note { font-size: 1.1875rem; margin-top: 8px; }
+.schedule { margin-top: 22px; padding: 8px 28px; }
+.schedule li { display: flex; flex-wrap: wrap; gap: 24px; padding: 18px 0; font-size: 1.1875rem; }
+.schedule li + li { border-top: 1px solid var(--purple-line); }
+.schedule .time { color: var(--green-text); min-width: 90px; font-size: .9375rem; }
+.schedule .title { flex: 1; font-weight: 800; }
+
+.lead { font-size: 1.375rem; line-height: 1.5; margin-top: 20px; max-width: 640px; }
+.lead-wide { font-size: 1.25rem; max-width: none; margin-top: 14px; }
+#sponsors .btn { margin-top: 24px; }
+
+.footer {
+  margin-top: 110px; padding-top: 26px; padding-bottom: 44px;
+  border-top: 2px solid var(--purple-rule);
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;
+  font-size: .9375rem;
+}
+.footer img { height: 22px; width: auto; }
+.footer a { display: inline-block; padding: 10px 0; }
+
+/* Between about 760px and 1060px the hero text wraps over the gold blob,
+   where white text is unreadable (1.75:1), so the blob is hidden there. */
+@media (max-width: 1060px) {
+  .blob-gold { display: none; }
+}
+
+@media (max-width: 1024px) {
+  .org-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 760px) {
+  .wrap { padding: 0 16px; }
+  .blob-green-right { display: none; }
+  .hero { min-height: 0; }
+  .nav-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .nav { column-gap: 18px; font-size: 1rem; }
+  .hero-grid { padding-top: 32px; gap: 32px; }
+  .hero-copy { font-size: 1.1875rem; }
+  .hero-date { padding-top: 48px; padding-bottom: 40px; }
+  .date-line { font-size: 2.125rem; }
+  .section { padding-top: 72px; }
+  .cfp { padding: 24px; }
+  .schedule { padding: 4px 20px; }
+  .schedule li { gap: 6px 16px; }
+  .footer { margin-top: 80px; }
+}
+
+@media (max-width: 480px) {
+  .org-grid { grid-template-columns: 1fr; }
+}
