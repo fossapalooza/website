@@ -1,0 +1,11 @@
+baseURL = "https://fossapalooza.eu/"
+languageCode = "en"
+title = "FOSSapalooza"
+
+# This is a one-page site, so Hugo only needs to build the home page.
+disableKinds = ["taxonomy", "term", "RSS", "sitemap", "section", "page"]
+enableRobotsTXT = true
+
+[params]
+  description = "An open source conference in Brussels on 29 January 2027, the day before FOSDEM."
+  themeColor = "#6E2D8A"
