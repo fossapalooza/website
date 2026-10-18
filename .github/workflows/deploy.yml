@@ -82,16 +82,27 @@ jobs:
               echo "::error::Could not reach $DREAMHOST_HOST over SSH. Check that SSH is turned on for the user in the DreamHost panel."; exit 1
             fi
             if [ -n "$FINGERPRINT" ]; then
+              # Accepts the SHA256 fingerprint (recommended: the ED25519 one) with or without the "SHA256:" prefix,
+              # or an MD5 fingerprint (aa:bb:...). SHA256 is compared exactly; MD5 ignores upper/lower case.
               want=$(printf '%s' "$FINGERPRINT" | tr -d ' \r\n' | sed -E 's/^(SHA256|MD5)://I')
-              have=$( { ssh-keygen -lf ~/.ssh/known_hosts; ssh-keygen -E md5 -lf ~/.ssh/known_hosts; } | awk '{print $2}' | sed -E 's/^(SHA256|MD5)://')
-              if [ -z "$want" ] || [ -z "$have" ]; then
-                echo "::error::Could not compare fingerprints (DREAMHOST_FINGERPRINT looks empty, or the server sent no key)."; exit 1
-              fi
-              if printf '%s\n' "$have" | grep -qxiF "$want"; then
-                echo "The server's fingerprint matches DREAMHOST_FINGERPRINT."
+              case "$want" in *:*) want=$(printf '%s' "$want" | tr 'A-F' 'a-f') ;; esac
+              if [ -z "$want" ]; then echo "::error::DREAMHOST_FINGERPRINT looks empty."; exit 1; fi
+              # Keep only the server key whose fingerprint matches, so the connection can't use any other key.
+              : > ~/.ssh/known_hosts.verified
+              while IFS= read -r line; do
+                [ -n "$line" ] || continue
+                printf '%s\n' "$line" > ~/.ssh/one_key
+                fps=$( { ssh-keygen -lf ~/.ssh/one_key; ssh-keygen -E md5 -lf ~/.ssh/one_key; } 2>/dev/null | awk '{print $2}' | sed -E 's/^(SHA256|MD5)://')
+                if printf '%s\n' "$fps" | grep -qxF "$want"; then printf '%s\n' "$line" >> ~/.ssh/known_hosts.verified; fi
+              done < ~/.ssh/known_hosts
+              rm -f ~/.ssh/one_key
+              if [ -s ~/.ssh/known_hosts.verified ]; then
+                mv ~/.ssh/known_hosts.verified ~/.ssh/known_hosts
+                echo "The server's fingerprint matches DREAMHOST_FINGERPRINT; only that key will be trusted."
               else
-                echo "::error::The server's fingerprint does not match DREAMHOST_FINGERPRINT, so nothing was copied. Fingerprints seen:"
-                printf '%s\n' "$have"; exit 1
+                echo "::error::No server key matches DREAMHOST_FINGERPRINT, so nothing was copied. Fingerprints the server offered:"
+                ssh-keygen -lf ~/.ssh/known_hosts || true
+                exit 1
               fi
             else
               echo "::warning::DREAMHOST_FINGERPRINT is not set, so the server's identity was not checked. See README."
