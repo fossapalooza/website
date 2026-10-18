@@ -88,6 +88,18 @@
     <h2 id="tickets-h">Tickets</h2>
     <div class="tickets">
       {{- range $s.tickets.items }}
+      {{- /* Each box links to its own "url" if set, otherwise to tickets.url (the pretix shop). */}}
+      {{- $href := .url | default $s.tickets.url }}
+      {{- if $href }}
+      <a class="card ticket ticket-link{{ if .highlight }} ticket-hl{{ end }}" href="{{ $href }}">
+        <span class="mono label">{{ .label }}</span>
+        <span class="price">{{ .price }}</span>
+        {{- with .note }}
+        <span class="note">{{ . }}</span>
+        {{- end }}
+        <span class="mono ticket-cta">Get tickets <svg aria-hidden="true" viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z" fill="currentColor"/></svg></span>
+      </a>
+      {{- else }}
       <div class="card ticket{{ if .highlight }} ticket-hl{{ end }}">
         <p class="mono label">{{ .label }}</p>
         <p class="price">{{ .price }}</p>
@@ -95,6 +107,7 @@
         <p class="note">{{ . }}</p>
         {{- end }}
       </div>
+      {{- end }}
       {{- end }}
     </div>
     {{- with $s.tickets.url }}
@@ -117,6 +130,7 @@
       <a class="btn btn-green mono" href="{{ $cfpHref }}">Submit on Pretalx <svg aria-hidden="true" viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z" fill="currentColor"/></svg></a>
     </div>
     {{- end }}{{ end }}
+  </section>
 
   <section class="wrap section" id="sponsors" aria-labelledby="sponsors-h">
     <h2 id="sponsors-h">Sponsors</h2>
@@ -127,6 +141,21 @@
   <section class="wrap section" id="venue" aria-labelledby="venue-h">
     <h2 id="venue-h">Getting there</h2>
     <p class="lead lead-wide">{{ $e.venue_name }}, {{ $e.venue_address }}. The day before FOSDEM, {{ $e.fosdem_dates }}.</p>
+    {{- with $e.map_embed }}
+    <figure class="map">
+      <iframe src="{{ . }}" title="Map showing {{ $e.venue_name }}, {{ $e.venue_address }}" loading="lazy"></iframe>
+    </figure>
+    {{- end }}
+    {{- if or $e.directions_link $e.map_link }}
+    <p class="map-links">
+      {{- with $e.directions_link }}
+      <a class="btn btn-green mono" href="{{ . }}">Get directions <svg aria-hidden="true" viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z" fill="currentColor"/></svg></a>
+      {{- end }}
+      {{- with $e.map_link }}
+      <a class="mono map-larger" href="{{ . }}">View larger map</a>
+      {{- end }}
+    </p>
+    {{- end }}
   </section>
 </main>
 
