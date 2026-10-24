@@ -58,7 +58,7 @@
   <div class="wrap hero-date">
     <p class="date-line">{{ $e.date_long }}</p>
     <p class="city-line">{{ $e.city }}</p>
-    <p class="venue-line">{{ $e.venue_name }} · {{ $e.date_note }}</p>
+    <p class="venue-line">{{ $e.date_note }}</p>
   </div>
 </header>
 
@@ -110,9 +110,6 @@
       {{- end }}
       {{- end }}
     </div>
-    {{- with $s.tickets.url }}
-    <p><a class="btn btn-white mono tickets-btn" href="{{ . }}">Get tickets</a></p>
-    {{- end }}
   </section>
 
   <section class="wrap section" id="program" aria-labelledby="program-h">
