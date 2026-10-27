@@ -5,8 +5,8 @@ event:
   question: Upstream, downstream, all together now.
   date_long: 29 January 2027
   city: Brussels
-  venue_name: Hotel Bedford
-  venue_address: Rue du Midi 135, Brussels
+  venue_name: 
+  venue_address: Brussels
   date_note: the day before FOSDEM
   fosdem_dates: 30–31 January 2027
   # OpenStreetMap shown under "Getting there". Delete map_embed (or set it to "") to hide the map.
