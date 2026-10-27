@@ -25,7 +25,7 @@ nav:
 organizers:
   - { name: AboutCode, url: "https://aboutcode.org", logo: "images/organizers/AboutCode.svg" }
   - { name: OWASP, url: "https://owasp.org/", logo: "images/organizers/OWASP.svg" }
-  - { name: Eclipse Open Regulatory Compliance Working Group, url: "https://orcwg.org/", logo: "images/organizers/ORCWG.svg" }
+  - { name: Open Regulatory Compliance Working Group, url: "https://orcwg.org/", logo: "images/organizers/ORCWG.svg" }
   - { name: OpenChain, url: "https://openchainproject.org/", logo: "images/organizers/OpenChain.svg" }
 
 tickets:
