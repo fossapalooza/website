@@ -1,7 +1,7 @@
 # Everything written on the page comes from this file.
 event:
   name: FOSSapalooza
-  intro: "An open source conference for everyone who builds, maintains, secures, ships, and uses open source."
+  intro: "One day, multiple stages, the whole software supply chain. FOSSapalooza is an open source conference for everyone who builds, maintains, secures, ships, and uses open source."
   question: Upstream, downstream, all together now.
   date_long: 29 January 2027
   city: Brussels
