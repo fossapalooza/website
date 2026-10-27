@@ -54,7 +54,7 @@ sponsors:
 around_fosdem:
   heading: More events
   # The intro can include links, written as [text](https://address).
-  intro: "Join us at other events before and after [FOSDEM](https://fosdem.org/) on January 30–31."
+  intro: "Join us at other events before and after [FOSDEM](https://fosdem.org/)!"
   events:
     - date: Thu 28 January 2027
       title: "Code & Compliance | FOSDEM Edition 2027"
