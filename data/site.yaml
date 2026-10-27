@@ -1,8 +1,8 @@
 # Everything written on the page comes from this file.
 event:
   name: FOSSapalooza
-  intro: "An open source conference for the people who do open source: maintainers, builders, and everyone that ships code."
-  question: Not for policy makers.
+  intro: "An open source conference for everyone who builds, maintains, secures, ships, and uses open source."
+  question: Upstream, downstream, all together now.
   date_long: 29 January 2027
   city: Brussels
   venue_name: Hotel Bedford
@@ -29,7 +29,7 @@ organizers:
   - { name: OpenChain, url: "https://openchainproject.org/", logo: "images/organizers/OpenChain.svg" }
 
 tickets:
-  url: "https://pretix.eu/FOSSapalooza/2027/"
+  url: "https://register.fossapalooza.eu"
   items:
     - { label: Community, price: Free }
     - { label: "Early-bird · until Dec 30", price: "€100", note: "Your paid registration supports more community tickets!", highlight: true }
@@ -37,7 +37,7 @@ tickets:
 
 cfp:
   show: true
-  url: "https://pretalx.com/fossapalooza-2026/"
+  url: "https://pretalx.com/fossapalooza-2027/"
   heading: ["Got something", "to show us?"]
   text: We want practical talks from people who build, maintain, and ship open source. Submissions go through Pretalx.
   facts:
@@ -48,8 +48,31 @@ cfp:
 sponsors:
   text: Interested in sponsoring FOSSapalooza? Contact us for more information.
 
+# Co-organizers' events in Brussels around FOSDEM, shown in the "FOSDEM week" section.
+# For each event: date, title, organizer, venue, text, and optional url (event page) and register_url.
+# Leave url or register_url as "" to hide that button. Delete this whole block to hide the section.
+around_fosdem:
+  heading: More events
+  # The intro can include links, written as [text](https://address).
+  intro: "[FOSDEM](https://fosdem.org/) is on January 30–31, and our co-organizers are running more events during the week too."
+  events:
+    - date: Thu 28 January 2027
+      title: "Code & Compliance | FOSDEM Edition 2027"
+      organizer: Open Regulatory Compliance Working Group (Eclipse Foundation)
+      venue: Maison de la Poste, Brussels
+      text: "Code & Compliance returns to Brussels for FOSDEM week: a practical day for maintainers and engineers, with implementation detail, working examples and open discussion."
+      url: "https://codeandcompliance.orcwg.org/code-compliance-fosdem-edition-2027/"
+      register_url: "https://eclipse.idloom.events/code-compliance-jan2027/register"
+    - date: Mon 1 February 2027
+      title: "FOSDEM 2027 Fringe: FOSS license and security compliance tools workshop"
+      organizer: AboutCode
+      venue: Brussels
+      text: "A one-day workshop for developers and users of open source compliance tools: lightning talks and breakouts for tool developers in the morning, feedback and joint development sessions for tool users in the afternoon."
+      url: "https://workshop.aboutcode.org/"
+      register_url: "https://workshop.aboutcode.org/"
+
 contact:
   email: "info@fossapalooza.eu"
-  coc_url: "#"
+  coc_url: "https://github.com/fossapalooza/README.md/blob/main/CODE_OF_CONDUCT.md"
 
 legal_entity: "Legal entity: AboutCode Europe ASBL"
