@@ -154,6 +154,36 @@
     </p>
     {{- end }}
   </section>
+  {{- with $s.around_fosdem }}
+  <section class="wrap section" id="fosdem-week" aria-labelledby="fosdem-week-h">
+    <h2 id="fosdem-week-h">{{ .heading }}</h2>
+    {{- with .intro }}
+    <p class="lead">{{ . | markdownify }}</p>
+    {{- end }}
+    <ul class="events">
+      {{- range $ev := .events }}
+      <li class="card event">
+        <p class="mono label">{{ $ev.date }}</p>
+        <h3 class="event-title">{{ $ev.title }}</h3>
+        <p class="event-meta">{{ $ev.organizer }}{{ with $ev.venue }} · {{ . }}{{ end }}</p>
+        {{- with $ev.text }}
+        <p class="event-text">{{ . }}</p>
+        {{- end }}
+        {{- if or $ev.url $ev.register_url }}
+        <p class="event-links">
+          {{- with $ev.url }}
+          <a class="btn btn-outline mono" href="{{ . }}">Event details<span class="visually-hidden">: {{ $ev.title }}</span></a>
+          {{- end }}
+          {{- with $ev.register_url }}
+          <a class="btn btn-green mono" href="{{ . }}">Register<span class="visually-hidden"> for {{ $ev.title }}</span></a>
+          {{- end }}
+        </p>
+        {{- end }}
+      </li>
+      {{- end }}
+    </ul>
+  </section>
+  {{- end }}
 </main>
 
 <footer class="wrap footer">
