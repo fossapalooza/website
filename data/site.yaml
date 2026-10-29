@@ -26,8 +26,11 @@ organizers:
   - { name: AboutCode, url: "https://aboutcode.org", logo: "images/organizers/AboutCode.svg" }
   - { name: OWASP, url: "https://owasp.org/", logo: "images/organizers/OWASP.svg" }
   - { name: Open Regulatory Compliance Working Group, url: "https://orcwg.org/", logo: "images/organizers/ORCWG.svg" }
-  - { name: OpenChain, url: "https://openchainproject.org/", logo: "images/organizers/OpenChain.svg" }
 
+# Shown in the "With partners" section, below the co-organizers. Same fields as organizers.
+partners:
+  - { name: OpenChain, url: "https://openchainproject.org/", logo: "images/organizers/OpenChain.svg" }
+  
 tickets:
   url: "https://register.fossapalooza.eu"
   items:
