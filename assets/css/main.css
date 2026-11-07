@@ -80,7 +80,6 @@ a:not([class]):focus-visible { border-radius: 6px; }
 /* Hero */
 .hero { position: relative; overflow: hidden; background: var(--purple); min-height: 940px; }
 .blob { position: absolute; pointer-events: none; }
-.blob-gold { left: -150px; bottom: -190px; width: 600px; height: 600px; }
 .blob-green-top { left: 42%; top: -200px; width: 440px; height: 440px; }
 .blob-green-right { right: -170px; top: 250px; width: 560px; height: 560px; }
 
@@ -120,10 +119,15 @@ a:not([class]):focus-visible { border-radius: 6px; }
 .topics { position: relative; padding-top: 72px; }
 .topics-head { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
 .topics-label { font-size: .9375rem; color: var(--gold); }
-.topics-pause { background: transparent; color: var(--white); cursor: pointer; }
+/* The pause button sits under the tapes on the right and looks like the "Talks on" label:
+   the same small capitals with no box. It is white, not gold, because gold on the green
+   blob is too faint to read. It is still at least 32px tall, so it is easy to tap. */
+.topics-foot { display: flex; justify-content: flex-end; }
+.topics-pause { display: inline-flex; align-items: center; min-height: 32px; margin-top: 16px; padding: 4px 0; border: 0; border-radius: 4px; background: transparent; color: var(--white); font-size: .9375rem; line-height: 1.2; cursor: pointer; }
 .topics-pause:hover { color: var(--gold); }
-.when-playing, .when-paused { display: inline-flex; align-items: center; gap: 10px; }
-.topics.is-paused .when-playing, .topics:not(.is-paused) .when-paused { display: none; }
+.topics-pause svg { width: 10px; height: 10px; }
+.when-playing, .when-paused { display: inline-flex; align-items: center; gap: 8px; }
+.topics-pause.is-paused .when-playing, .topics-pause:not(.is-paused) .when-paused { display: none; }
 
 .tapes { display: none; flex-direction: column; gap: 16px; margin: 40px -60px 0; transform: rotate(-2deg); }
 .tape { overflow: hidden; padding: 16px 0; border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); }
@@ -156,6 +160,22 @@ a:not([class]):focus-visible { border-radius: 6px; }
 .city-line { font-size: clamp(3.75rem, 7.8vw, 6.75rem); }
 .venue-line { font-size: 1.125rem; font-weight: 600; margin-top: 10px; }
 
+/* Co-organizers and partners beside the date, in white. Only on screens at least 960px wide:
+   on narrower screens there is no room, and the same logos are in the sections right below.
+   Each logo's height comes from hero_size in data/site.yaml and shrinks a little on short
+   screens, so the logos stay no taller than the date beside them. */
+.hero-orgs { display: none; text-align: left; }
+.hero-orgs-group + .hero-orgs-group { margin-top: 14px; }
+.hero-orgs-label { font-size: .8125rem; color: var(--gold); }
+.hero-orgs-list { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 28px; margin-top: 6px; }
+.hero-orgs-list a { display: block; padding: 4px 0; border-radius: 4px; }
+.hero-orgs-list a:hover { opacity: .75; }
+.hero-orgs-list img { display: block; width: auto; height: calc(var(--h) * min(1px, .1111vh)); filter: brightness(0) invert(1); }
+@media (min-width: 960px) {
+  .hero-date { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; }
+  .hero-orgs { display: block; max-width: 520px; }
+}
+
 /* Sections */
 .section { padding-top: 96px; }
 .section h2 { font-weight: 900; text-transform: uppercase; font-size: clamp(2.5rem, 4.6vw, 4rem); line-height: .95; letter-spacing: -.01em; }
@@ -169,6 +189,14 @@ a:not([class]):focus-visible { border-radius: 6px; }
 }
 .org-tile img { max-height: 80px; width: auto; object-fit: contain; }
 .org-tile .mono { font-size: .8125rem; text-align: center; overflow-wrap: anywhere; }
+/* Below 960px the logos aren't beside the date, so these sections show them the same way instead:
+   in white, straight on the purple, sized by hero_size. Wider screens keep the white tiles. */
+@media (max-width: 959px) {
+  .org-grid { display: flex; flex-wrap: wrap; align-items: center; gap: 22px 36px; }
+  .org-grid > .card { padding: 0; border-radius: 0; background: none; }
+  .org-tile { min-height: 0; padding: 4px 0; border-radius: 6px; background: none; color: var(--white); }
+  .org-tile img { max-height: none; height: calc(var(--h, 24) * 1.5px); filter: brightness(0) invert(1); }
+}
 
 .tickets { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 28px; }
 .ticket { flex: 1 1 300px; }
@@ -250,12 +278,6 @@ a:not([class]):focus-visible { border-radius: 6px; }
 .footer img { height: 22px; width: auto; }
 .footer a { display: inline-block; padding: 10px 0; }
 
-/* Between about 760px and 1060px the hero text wraps over the gold blob,
-   where white text is unreadable (1.75:1), so the blob is hidden there. */
-@media (max-width: 1060px) {
-  .blob-gold { display: none; }
-}
-
 @media (max-width: 1024px) {
   .org-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -277,10 +299,13 @@ a:not([class]):focus-visible { border-radius: 6px; }
   .hero-date { padding-top: 48px; padding-bottom: 40px; }
   .date-line { font-size: 2.125rem; }
   .section { padding-top: 72px; }
+  /* Small enough that "Co-organized by", the longest heading, fits on one line. */
+  .section h2 { font-size: clamp(1.75rem, 8.4vw, 2.5rem); }
   .cfp { padding: 24px; }
   .schedule { padding: 4px 20px; }
   .schedule li { gap: 6px 16px; }
-  .footer { margin-top: 80px; }
+  /* The footer also has the "wrap" class, whose phone rule above clears its top and bottom padding, so set them again. */
+  .footer { margin-top: 80px; padding-top: 24px; padding-bottom: 32px; }
 }
 
 /* ---------- Hero fits one screen ----------
@@ -339,5 +364,79 @@ a:not([class]):focus-visible { border-radius: 6px; }
 @media (max-width: 760px) and (max-height: 700px) {
   .hero-logo img { width: min(100%, 24vh); }
   .topics { padding-top: 1.5vh; padding-bottom: 1.5vh; }
+  .hero-date { padding-bottom: 2vh; }
+}
+/* ---------- Hero fits one screen ----------
+   The logo, intro, "Talks on", tapes, pause button and date all fit in the browser window.
+   Sizes follow the window height (vh). Spare height is shared equally in three places: above
+   the logo, above "Talks on" and above the date. So the topics sit in the middle, with the same
+   space above "Talks on" as below "Pause topics". If a window is very short, the hero grows and
+   the page scrolls; nothing overlaps.
+   The tapes are tilted, so their left end sits lower and their right end higher than their box.
+   The small negative margins (in vw, because the tilt grows with the width, up to a limit for wide
+   screens) keep "Talks on" and the pause button close to where the tapes actually are. */
+@media (min-width: 761px) {
+  .hero { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; }
+  .hero > .wrap { width: 100%; }
+  .hero-grid { margin-top: auto; padding-top: calc(76px + 2vh); }
+  .hero-logo { flex: 0 1 auto; }
+  .hero-logo img { width: min(520px, 50vh); }
+  .hero-copy { font-size: clamp(1.0625rem, 2.3vh, 1.3125rem); }
+  .hero-copy .strong { margin-top: 1.6vh; }
+  .hero-actions { margin-top: 2.6vh; }
+  .topics { margin-top: auto; padding-top: 4vh; padding-bottom: 0; }
+  .tapes { margin-top: 2vh; gap: 12px; }
+  .tape { padding: 1.3vh 0; }
+  .tape li { font-size: clamp(1.125rem, min(3.8vw, 3.2vh), 2.25rem); }
+  .topics-pause { margin-top: 1.4vh; }
+  .hero-date { margin-top: auto; padding-top: 4vh; padding-bottom: 3.5vh; }
+  .date-line { font-size: clamp(2.25rem, min(5.2vw, 6vh), 4.5rem); }
+  .city-line { font-size: clamp(3.375rem, min(7.8vw, 9vh), 6.75rem); }
+}
+/* When the tapes move, the pause button shows. Its box reaches a little below its text,
+   so the date gets a little less top padding to keep the two spaces equal. */
+@media (min-width: 761px) and (prefers-reduced-motion: no-preference) {
+  .js .tapes { margin-top: max(-10px, 12px - 1.4vw); }
+  .js .topics-pause { margin-top: max(-14px, 9px - 1.5vw); }
+  .js .hero-date { padding-top: calc(4vh - 12px); }
+}
+
+/* Phones: the same content in a compact layout that fits the screen.
+   The menu sits on one line and the small logo is left out, because the big logo is right below it. */
+@media (max-width: 760px) {
+  .hero { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; }
+  .hero > .wrap { width: 100%; }
+  .site-bar .brand { display: none; }
+  .nav-row { padding-top: 10px; padding-bottom: 10px; }
+  .nav { column-gap: 10px; font-size: .8125rem; }
+  .nav .btn { padding: 10px 12px; font-size: .75rem; }
+  .hero-grid { margin-top: auto; padding-top: 1.5vh; gap: 2vh; }
+  .hero-logo img { width: min(100%, 28vh); }
+  .hero-copy { font-size: clamp(.875rem, 2vh, 1.0625rem); line-height: 1.45; }
+  .hero-copy .strong { margin-top: 1vh; }
+  .hero-actions { margin-top: 1.8vh; }
+  .topics { margin-top: auto; padding-top: 2.5vh; padding-bottom: 0; }
+  .topics-head { gap: 8px; }
+  .tapes { margin: 1.2vh -40px 0; gap: 10px; }
+  .tape { padding: 1.2vh 0; }
+  .tape li { font-size: clamp(1.0625rem, 2.4vh, 1.375rem); gap: 16px; padding-right: 16px; }
+  .tape-star { width: 14px; height: 14px; }
+  .topics-pause { margin-top: .6vh; }
+  /* Still list (reduced motion or no JavaScript): one compact run of text with gold dots between topics. */
+  .topics-static { display: block; margin-top: 10px; }
+  .topics-static li { display: inline; min-height: 0; padding: 0; border: 0; background: none; color: var(--white); font-size: .9375rem; font-weight: 700; line-height: 1.5; }
+  .topics-static li:not(:last-child)::after { content: ""; display: inline-block; width: 5px; height: 5px; margin: 0 .55em; border-radius: 50%; background: var(--gold); vertical-align: middle; }
+  .hero-date { margin-top: auto; padding-top: 2.5vh; padding-bottom: 3vh; }
+  .date-line { font-size: clamp(1.625rem, 4vh, 2.25rem); }
+  .city-line { font-size: clamp(2.5rem, 6.4vh, 3.5rem); }
+  .venue-line { font-size: 1rem; margin-top: 6px; }
+}
+@media (max-width: 760px) and (prefers-reduced-motion: no-preference) {
+  .js .hero-date { padding-top: calc(2.5vh - 10px); }
+}
+/* Short phones (e.g. iPhone SE): a little tighter still. */
+@media (max-width: 760px) and (max-height: 700px) {
+  .hero-logo img { width: min(100%, 24vh); }
+  .topics { padding-top: 1.5vh; }
   .hero-date { padding-bottom: 2vh; }
 }
