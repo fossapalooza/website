@@ -19,34 +19,34 @@ nav:
   - { label: Program, href: "#program" }
   - { label: Sponsors, href: "#sponsors" }
   - { label: Venue, href: "#venue" }
-+# Talk topics. Shown on the two moving tapes in the hero (shuffled each time the site is rebuilt)
-+# and in the Topics card next to the call for papers (in the order below).
-+topics:
-+  label: Talks on
-+  pause: Pause topics
-+  play: Play topics
-+  items:
-+    - Application security
-+    - CRA
-+    - Community 
-+    - Governance
-+    - Cybersecurity
-+    - Data
-+    - Diversity, equity, inclusion, and belonging
-+    - License compliance
-+    - LLMs and AI
-+    - OSPOs
-+    - Open source stewards
-+    - Package management
-+    - Policy and regulation
-+    - Project health
-+    - SBOMs
-+    - Security compliance
-+    - Standards
-+    - Supply chain
-+    - Sustainability
-+    - Tooling and automation
-+    - Vulnerability management
+# Talk topics. Shown on the two moving tapes in the hero (shuffled each time the site is rebuilt)
+# and in the Topics card next to the call for papers (in the order below).
+topics:
+  label: Talks on
+  pause: Pause topics
+  play: Play topics
+  items:
+    - Application security
+    - CRA
+    - Community 
+    - Governance
+    - Cybersecurity
+    - Data
+    - Diversity, equity, inclusion, and belonging
+    - License compliance
+    - LLMs and AI
+    - OSPOs
+    - Open source stewards
+    - Package management
+    - Policy and regulation
+    - Project health
+    - SBOMs
+    - Security compliance
+    - Standards
+    - Supply chain
+    - Sustainability
+    - Tooling and automation
+    - Vulnerability management
 # Put logo files in static/images/organizers/ and set "logo" to their path,
 # for example: logo: images/organizers/owasp.svg
 organizers:
