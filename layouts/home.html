@@ -5,6 +5,7 @@
 {{- $email := $s.contact.email -}}
 {{- $hasEmail := strings.Contains $email "@" -}}
 {{- $css := resources.Get "css/main.css" | minify | fingerprint -}}
+{{- $js := resources.Get "js/site.js" | minify | fingerprint -}}
 <!doctype html>
 <html lang="en">
 <head>
@@ -22,7 +23,9 @@
   <link rel="icon" href="{{ "images/favicon-32.png" | relURL }}" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="{{ "images/apple-touch-icon.png" | relURL }}">
   <link rel="preload" href="{{ "fonts/archivo-latin-900-normal.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+  <script>if ("IntersectionObserver" in window) document.documentElement.classList.add("js");</script>
   <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+  <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -32,6 +35,7 @@
   <svg class="blob blob-green-top" aria-hidden="true" viewBox="0 0 400 400"><path fill="#007844" d="M60 120C90 40 200 10 280 50C360 90 390 190 340 260C290 330 190 360 110 320C30 280 30 200 60 120Z"/></svg>
   <svg class="blob blob-green-right" aria-hidden="true" viewBox="0 0 400 400"><path fill="#00804A" d="M200 30C260 30 320 90 330 170C340 250 300 330 220 360C140 390 60 340 50 250C40 160 120 30 200 30Z"/></svg>
 
+<div class="site-bar" id="site-bar">
   <div class="wrap nav-row">
     <a class="brand" href="#top" aria-label="{{ $e.name }} home"><img src="{{ "images/fossapalooza-horizontal.png" | relURL }}" alt="" width="573" height="84"></a>
     <nav aria-label="Main">
@@ -43,6 +47,7 @@
       </ul>
     </nav>
   </div>
+</div>
 
   <div class="wrap hero-grid">
     <h1 class="hero-logo"><img src="{{ "images/fossapalooza-stacked.png" | relURL }}" alt="{{ $e.name }}" width="1034" height="605"></h1>
@@ -54,6 +59,42 @@
       </p>
     </div>
   </div>
+
+  {{- with $s.topics }}{{ with .items }}
+  {{- /* Two tapes, each holding half the topics. The second copy of each list makes the loop seamless and is hidden from screen readers. */}}
+  {{- $items := shuffle . }}
+  {{- $half := div (add (len $items) 1) 2 }}
+  <section class="topics" aria-labelledby="topics-h">
+    <div class="wrap topics-head">
+      <h2 class="mono topics-label" id="topics-h">{{ $s.topics.label }}</h2>
+      <button class="btn btn-outline mono topics-pause" type="button" aria-controls="topic-tapes" hidden>
+        <span class="when-playing"><svg aria-hidden="true" viewBox="0 0 12 12"><path d="M2 1h3v10H2zM7 1h3v10H7z" fill="currentColor"/></svg>{{ $s.topics.pause }}</span>
+        <span class="when-paused"><svg aria-hidden="true" viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z" fill="currentColor"/></svg>{{ $s.topics.play }}</span>
+      </button>
+    </div>
+    <div class="tapes" id="topic-tapes">
+      {{- range $i, $set := slice (first $half $items) (after $half $items) }}
+      <div class="tape {{ if eq $i 0 }}tape-gold{{ else }}tape-green{{ end }}">
+        <div class="tape-track">
+          {{- range $copy := slice 1 2 }}
+          <ul{{ if eq $copy 2 }} aria-hidden="true"{{ end }}>
+            {{- range $set }}
+            <li>{{ . }}<svg class="tape-star" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 0C13 7 17 11 24 12C17 13 13 17 12 24C11 17 7 13 0 12C7 11 11 7 12 0Z"/></svg></li>
+            {{- end }}
+          </ul>
+          {{- end }}
+        </div>
+      </div>
+      {{- end }}
+    </div>
+    {{- /* The same topics as a still list, shown when motion is reduced or JavaScript is off. */}}
+    <ul class="wrap topics-static">
+      {{- range $i, $t := $items }}
+      <li class="{{ if lt $i $half }}pill-gold{{ else }}pill-green{{ end }}">{{ $t }}</li>
+      {{- end }}
+    </ul>
+  </section>
+  {{- end }}{{ end }}
 
   <div class="wrap hero-date">
     <p class="date-line">{{ $e.date_long }}</p>
@@ -83,9 +124,6 @@
       {{- end }}
     </ul>
   </section>
-
-     </ul>
-   </section>
  
   {{- with $s.partners }}
   <section class="wrap section" id="partners" aria-labelledby="partners-h">
@@ -141,16 +179,32 @@
   <section class="wrap section" id="program" aria-labelledby="program-h">
     <h2 id="program-h">Program</h2>
     {{- with $s.cfp }}{{ if .show }}
-    <div class="card cfp" id="cfp">
-      <p class="mono label">Call for papers</p>
-      <h3 class="cfp-h">{{ range $i, $line := .heading }}{{ if $i }}<br>{{ end }}{{ $line }}{{ end }}</h3>
-      <p class="cfp-text">{{ .text }}</p>
-      <dl class="cfp-facts">
-        {{- range .facts }}
-        <div><dt class="mono">{{ .label }}</dt><dd>{{ .value }}</dd></div>
+    <div class="program-grid">
+      <div class="card cfp" id="cfp">
+        <p class="mono label">Call for papers</p>
+        <h3 class="cfp-h">{{ range $i, $line := .heading }}{{ if $i }}<br>{{ end }}{{ $line }}{{ end }}</h3>
+        <p class="cfp-text">{{ .text }}</p>
+        <dl class="cfp-facts">
+          {{- range .facts }}
+          <div><dt class="mono">{{ .label }}</dt><dd>{{ .value }}</dd></div>
+          {{- end }}
+        </dl>
+        <a class="btn btn-green mono" href="{{ $cfpHref }}">Submit on Pretalx <svg aria-hidden="true" viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z" fill="currentColor"/></svg></a>
+      </div>
+      {{- with $s.topics.items }}
+      <div class="card topics-card">
+        <p class="mono label">{{ $s.cfp.topics_label }}</p>
+        <h3 class="topics-card-h">{{ $s.cfp.topics_heading }}</h3>
+        <ul class="topics-list">
+          {{- range . }}
+          <li><svg class="topics-star" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 0C13 7 17 11 24 12C17 13 13 17 12 24C11 17 7 13 0 12C7 11 11 7 12 0Z"/></svg><span>{{ . }}</span></li>
+          {{- end }}
+        </ul>
+        {{- with $s.cfp.topics_note }}
+        <p class="topics-note">{{ . }}</p>
         {{- end }}
-      </dl>
-      <a class="btn btn-green mono" href="{{ $cfpHref }}">Submit on Pretalx <svg aria-hidden="true" viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z" fill="currentColor"/></svg></a>
+      </div>
+      {{- end }}
     </div>
     {{- end }}{{ end }}
   </section>
