@@ -29,7 +29,8 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+/* scroll-padding-top keeps links to #program etc. and keyboard focus from landing under the sticky header. */
+html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 body {
@@ -43,15 +44,18 @@ body {
 h1, h2, h3, p, ul, dl, dd { margin: 0; }
 ul { list-style: none; padding: 0; }
 img { display: block; max-width: 100%; height: auto; }
+[hidden] { display: none !important; }
 
 a { color: var(--white); }
 a:hover { color: var(--gold); }
-/* Keyboard focus: gold ring on purple and green; dark ring on the gold CFP card. */
-a:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+/* Keyboard focus: a gold ring with a dark edge outside it, so it shows on purple, green and gold
+   (gold alone is under 3:1 on the green blobs). Dark ring on the gold CFP card. */
+a:focus-visible, button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; box-shadow: 0 0 0 8px var(--ink); }
+a:not([class]):focus-visible { border-radius: 6px; }
 .cfp a:focus-visible { outline-color: var(--ink); }
 
 .skip { position: absolute; left: -9999px; top: 0; }
-.skip:focus { left: 16px; top: 16px; z-index: 10; background: var(--white); color: var(--ink); padding: 8px 14px; border-radius: 8px; }
+.skip:focus { left: 16px; top: 16px; z-index: 30; background: var(--white); color: var(--ink); padding: 8px 14px; border-radius: 8px; }
 
 .wrap { max-width: 1440px; margin: 0 auto; padding: 0 56px; }
 .mono { font-family: var(--mono); text-transform: uppercase; letter-spacing: .04em; font-weight: 500; }
@@ -80,11 +84,22 @@ a:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-ra
 .blob-green-top { left: 42%; top: -200px; width: 440px; height: 440px; }
 .blob-green-right { right: -170px; top: 250px; width: 560px; height: 560px; }
 
+/* Header bar. On wider screens it stays at the top of the window: see-through on the splash,
+   with the small logo hidden because the big logo is right below it. Once the big logo scrolls
+   out of view, site.js adds .is-stuck and the bar turns solid with the small logo.
+   Without JavaScript (.js missing) the logo is always shown. */
+.site-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 20; transition: background-color .2s ease, box-shadow .2s ease; }
 .nav-row {
   position: relative;
   display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
-  padding-top: 26px;
+  padding-top: 14px; padding-bottom: 14px;
 }
+@media (min-width: 761px) {
+  .site-bar.is-stuck { background-color: var(--purple-card); box-shadow: 0 1px 0 var(--purple-rule); }
+  .js .site-bar .brand { visibility: hidden; opacity: 0; transition: opacity .2s ease, visibility 0s linear .2s; }
+  .js .site-bar.is-stuck .brand { visibility: visible; opacity: 1; transition: opacity .2s ease; }
+}
+@media (prefers-reduced-motion: reduce) { .site-bar, .site-bar .brand { transition: none !important; } }
 .brand { display: inline-block; padding: 8px 0; }
 .brand img { height: 28px; width: auto; }
 .nav { display: flex; align-items: center; flex-wrap: wrap; column-gap: 26px; row-gap: 4px; font-weight: 800; font-size: 1.0625rem; }
@@ -92,12 +107,48 @@ a:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-ra
 .nav a:not(.btn) { display: inline-block; padding: 11px 2px; text-decoration: none; }
 .nav .btn { font-weight: 500; }
 
-.hero-grid { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 56px; padding-top: 96px; }
+.hero-grid { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 56px; padding-top: 168px; }
 .hero-logo { flex: 0 1 520px; }
 .hero-logo img { width: 100%; max-width: 520px; }
 .hero-copy { flex: 1 1 380px; max-width: 480px; font-size: 1.3125rem; line-height: 1.55; }
 .hero-copy .strong { font-weight: 800; margin-top: 16px; }
 .hero-actions { margin-top: 28px; }
+
+/* Talk topics in the hero: two tapes moving in opposite directions at the same speed.
+   They only move when JavaScript is on and the reader hasn't asked for reduced motion.
+   Otherwise the same topics show as a still list of pills (.topics-static). */
+.topics { position: relative; padding-top: 72px; }
+.topics-head { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.topics-label { font-size: .9375rem; color: var(--gold); }
+.topics-pause { background: transparent; color: var(--white); cursor: pointer; }
+.topics-pause:hover { color: var(--gold); }
+.when-playing, .when-paused { display: inline-flex; align-items: center; gap: 10px; }
+.topics.is-paused .when-playing, .topics:not(.is-paused) .when-paused { display: none; }
+
+.tapes { display: none; flex-direction: column; gap: 16px; margin: 40px -60px 0; transform: rotate(-2deg); }
+.tape { overflow: hidden; padding: 16px 0; border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); }
+.tape-gold { background: var(--gold); color: var(--ink); --star: var(--purple); }
+.tape-green { background: var(--green); color: var(--white); --star: var(--gold); }
+.tape-track { display: flex; width: max-content; animation: tape-left 50s linear infinite; }
+/* The green tape's loop is longer, so it gets more time to move at the same speed. */
+.tape-green .tape-track { animation-name: tape-right; animation-duration: 70s; }
+.tape ul { display: flex; }
+.tape li { display: flex; align-items: center; gap: 24px; padding-right: 24px; white-space: nowrap; font-weight: 900; font-size: clamp(1.25rem, 3.8vw, 2.25rem); line-height: 1; text-transform: uppercase; letter-spacing: -.01em; }
+.tape-star { width: 20px; height: 20px; flex: none; fill: var(--star); }
+.tapes:hover .tape-track, .topics.is-paused .tape-track { animation-play-state: paused; }
+@keyframes tape-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes tape-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+.topics-static { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.topics-static li { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 16px; border: 2px solid var(--ink); border-radius: 999px; font-size: 1.0625rem; font-weight: 800; line-height: 1.2; }
+.pill-gold { background: var(--gold); color: var(--ink); }
+.pill-green { background: var(--green); color: var(--white); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .js .tapes { display: flex; }
+  .js .topics-static { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .topics-pause { display: none !important; } }
 
 .hero-date { position: relative; text-align: right; padding-top: 70px; padding-bottom: 56px; }
 .date-line, .city-line { font-weight: 900; line-height: .95; text-transform: uppercase; letter-spacing: -.02em; }
@@ -166,6 +217,17 @@ a:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-ra
 .cfp-facts dd { font-size: 1.375rem; font-weight: 900; margin-top: 4px; }
 .cfp .btn { margin-top: 28px; }
 
+/* Program: the call for papers with the Topics card beside it (stacked on narrow screens). */
+.program-grid { display: flex; flex-wrap: wrap; align-items: stretch; gap: 16px; margin-top: 28px; }
+.program-grid .cfp { margin-top: 0; flex: 1 1 560px; min-width: 0; }
+.topics-card { flex: 1 1 420px; min-width: 0; padding: 36px; }
+.topics-card .label { font-size: .8125rem; color: var(--gold); }
+.topics-card-h { font-size: 1.75rem; font-weight: 900; line-height: 1.05; text-transform: uppercase; letter-spacing: -.01em; margin-top: 12px; }
+.topics-list { columns: 2 220px; column-gap: 24px; margin-top: 20px; }
+.topics-list li { display: flex; align-items: flex-start; gap: 10px; break-inside: avoid; padding: 4px 0; font-size: 1.0625rem; font-weight: 600; line-height: 1.35; }
+.topics-star { width: 12px; height: 12px; flex: none; margin-top: 6px; fill: var(--green-text); }
+.topics-note { margin-top: 20px; color: var(--lilac); }
+
 .sub { font-size: .875rem; color: var(--gold); margin-top: 40px; }
 .muted { color: var(--lilac); }
 .schedule-note { font-size: 1.1875rem; margin-top: 8px; }
@@ -202,7 +264,13 @@ a:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-ra
   .wrap { padding: 0 16px; }
   .blob-green-right { display: none; }
   .hero { min-height: 0; }
+  /* On phones the menu takes two or three lines, so the header scrolls away with the page instead of sticking. */
+  html { scroll-padding-top: 0; }
+  .site-bar { position: relative; }
   .nav-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .topics { padding-top: 48px; }
+  .tapes { margin-top: 32px; }
+  .topics-card { padding: 24px; }
   .nav { column-gap: 18px; font-size: 1rem; }
   .hero-grid { padding-top: 32px; gap: 32px; }
   .hero-copy { font-size: 1.1875rem; }
