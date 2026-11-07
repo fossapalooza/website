@@ -1,0 +1,20 @@
+{{- /* The co-organizer and partner logos, in white, in two groups.
+       Used twice in home.html: beside the date on wide screens (small gold labels),
+       and right below the top of the page on phones and small tablets (headings = true). */}}
+{{- $headings := .headings }}
+{{- range $g := slice (dict "label" "Co-organized by" "items" .site.organizers) (dict "label" "With partners" "items" .site.partners) }}
+{{- with $g.items }}
+<div class="hero-orgs-group">
+  {{- if $headings }}
+  <h2>{{ $g.label }}</h2>
+  {{- else }}
+  <p class="mono hero-orgs-label">{{ $g.label }}</p>
+  {{- end }}
+  <ul class="hero-orgs-list">
+    {{- range $o := . }}{{ with $o.logo }}
+    <li>{{ if $o.url }}<a href="{{ $o.url }}">{{ end }}<img src="{{ . | relURL }}" alt="{{ $o.name }}" style="--h: {{ $o.hero_size | default 24 }}">{{ if $o.url }}</a>{{ end }}</li>
+    {{- end }}{{ end }}
+  </ul>
+</div>
+{{- end }}
+{{- end }}
