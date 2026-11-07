@@ -33,3 +33,4 @@
     show();
     try { localStorage.setItem(key, paused ? "1" : "0"); } catch (e) {}
   });
+})();
