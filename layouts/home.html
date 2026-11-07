@@ -100,18 +100,7 @@
     {{- /* Co-organizers and partners beside the date, on wide screens only. The logos show in white. */}}
     {{- if or $s.organizers $s.partners }}
     <div class="hero-orgs">
-      {{- range $g := slice (dict "label" "Co-organized by" "items" $s.organizers) (dict "label" "With partners" "items" $s.partners) }}
-      {{- with $g.items }}
-      <div class="hero-orgs-group">
-        <p class="mono hero-orgs-label">{{ $g.label }}</p>
-        <ul class="hero-orgs-list">
-          {{- range $o := . }}{{ with $o.logo }}
-          <li>{{ if $o.url }}<a href="{{ $o.url }}">{{ end }}<img src="{{ . | relURL }}" alt="{{ $o.name }}" style="--h: {{ $o.hero_size | default 24 }}">{{ if $o.url }}</a>{{ end }}</li>
-          {{- end }}{{ end }}
-        </ul>
-      </div>
-      {{- end }}
-      {{- end }}
+      {{- partial "org-logos.html" (dict "site" $s) }}
     </div>
     {{- end }}
     <div class="hero-when">
@@ -123,6 +112,13 @@
 </header>
 
 <main id="main">
+  {{- /* Phones and small tablets: the same logos right below the top of the page, with headings.
+         The Co-organized by and With partners sections further down are hidden on those screens. */}}
+  {{- if or $s.organizers $s.partners }}
+  <div class="wrap section orgs-mobile">
+    {{- partial "org-logos.html" (dict "site" $s "headings" true) }}
+  </div>
+  {{- end }}
   <section class="wrap section" id="tickets" aria-labelledby="tickets-h">
     <h2 id="tickets-h">Tickets</h2>
     <div class="tickets">

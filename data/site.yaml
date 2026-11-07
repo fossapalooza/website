@@ -50,10 +50,10 @@ topics:
 
 # Put logo files in static/images/organizers/ and set "logo" to their path,
 # for example: logo: images/organizers/owasp.svg
-# The logos also show in white: beside the date at the top of the page on wide screens, and in
-# these sections on phones and small tablets. So use logo files with a transparent background.
-# hero_size is the logo's height beside the date, in pixels (24 if left out; the sections on
-# phones show it 1.5 times as big). Wide logos need less and tall or square ones more, so they
+# The logos also show in white near the top of the page: beside the date on wide screens, and right
+# below it on phones and small tablets. So use logo files with a transparent background.
+# hero_size is the logo's height beside the date, in pixels (24 if left out; phones and small
+# tablets show it 1.5 times as big). Wide logos need less and tall or square ones more, so they
 # all look about the same size.
 organizers:
   - { name: AboutCode, url: "https://aboutcode.org", logo: "images/co-organizers/AboutCode.svg", hero_size: 22 }
