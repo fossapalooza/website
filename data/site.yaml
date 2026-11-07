@@ -74,12 +74,11 @@ cfp:
     - { label: Deadline, value: "Nov 30" }
     - { label: Schedule announced, value: "Dec 7" }
     - { label: Formats, value: "Talks, panels, and more" }
-         - { label: Formats, value: "Talks, panels, and more" }
-+  # Topics card beside the call for papers. The list comes from "topics" above.
-+  # Set topics_note to "" to hide that line.
-+  topics_label: Topics
-+  topics_heading: We’re looking for talks on
-+  topics_note: Not on the list? Submit it anyway!
+  # Topics card beside the call for papers. The list comes from "topics" above.
+  # Set topics_note to "" to hide that line.
+  topics_label: Topics
+  topics_heading: We’re looking for talks on
+  topics_note: Not on the list? Submit it anyway!
 
 sponsors:
   text: Interested in sponsoring FOSSapalooza? Contact us for more information.
