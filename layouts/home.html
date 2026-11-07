@@ -31,7 +31,6 @@
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="hero" id="top">
-  <svg class="blob blob-gold" aria-hidden="true" viewBox="0 0 400 400"><path fill="#EEBE1B" d="M210 20C290 10 370 70 385 160C400 250 350 340 260 375C170 410 70 370 35 285C0 200 30 110 95 60C130 33 170 25 210 20Z"/></svg>
   <svg class="blob blob-green-top" aria-hidden="true" viewBox="0 0 400 400"><path fill="#007844" d="M60 120C90 40 200 10 280 50C360 90 390 190 340 260C290 330 190 360 110 320C30 280 30 200 60 120Z"/></svg>
   <svg class="blob blob-green-right" aria-hidden="true" viewBox="0 0 400 400"><path fill="#00804A" d="M200 30C260 30 320 90 330 170C340 250 300 330 220 360C140 390 60 340 50 250C40 160 120 30 200 30Z"/></svg>
 
@@ -67,10 +66,6 @@
   <section class="topics" aria-labelledby="topics-h">
     <div class="wrap topics-head">
       <h2 class="mono topics-label" id="topics-h">{{ $s.topics.label }}</h2>
-      <button class="btn btn-outline mono topics-pause" type="button" aria-controls="topic-tapes" hidden>
-        <span class="when-playing"><svg aria-hidden="true" viewBox="0 0 12 12"><path d="M2 1h3v10H2zM7 1h3v10H7z" fill="currentColor"/></svg>{{ $s.topics.pause }}</span>
-        <span class="when-paused"><svg aria-hidden="true" viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z" fill="currentColor"/></svg>{{ $s.topics.play }}</span>
-      </button>
     </div>
     <div class="tapes" id="topic-tapes">
       {{- range $i, $set := slice (first $half $items) (after $half $items) }}
@@ -93,13 +88,37 @@
       <li class="{{ if lt $i $half }}pill-gold{{ else }}pill-green{{ end }}">{{ $t }}</li>
       {{- end }}
     </ul>
+    <div class="wrap topics-foot">
+      <button class="mono topics-pause" type="button" aria-controls="topic-tapes" hidden>
+        <span class="when-playing"><svg aria-hidden="true" viewBox="0 0 12 12"><path d="M2 1h3v10H2zM7 1h3v10H7z" fill="currentColor"/></svg>{{ $s.topics.pause }}</span>
+        <span class="when-paused"><svg aria-hidden="true" viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z" fill="currentColor"/></svg>{{ $s.topics.play }}</span>
+      </button>
+    </div>
   </section>
   {{- end }}{{ end }}
-
   <div class="wrap hero-date">
-    <p class="date-line">{{ $e.date_long }}</p>
-    <p class="city-line">{{ $e.city }}</p>
-    <p class="venue-line">{{ $e.date_note }}</p>
+    {{- /* Co-organizers and partners beside the date, on wide screens only. The logos show in white. */}}
+    {{- if or $s.organizers $s.partners }}
+    <div class="hero-orgs">
+      {{- range $g := slice (dict "label" "Co-organized by" "items" $s.organizers) (dict "label" "With partners" "items" $s.partners) }}
+      {{- with $g.items }}
+      <div class="hero-orgs-group">
+        <p class="mono hero-orgs-label">{{ $g.label }}</p>
+        <ul class="hero-orgs-list">
+          {{- range $o := . }}{{ with $o.logo }}
+          <li>{{ if $o.url }}<a href="{{ $o.url }}">{{ end }}<img src="{{ . | relURL }}" alt="{{ $o.name }}" style="--h: {{ $o.hero_size | default 24 }}">{{ if $o.url }}</a>{{ end }}</li>
+          {{- end }}{{ end }}
+        </ul>
+      </div>
+      {{- end }}
+      {{- end }}
+    </div>
+    {{- end }}
+    <div class="hero-when">
+      <p class="date-line">{{ $e.date_long }}</p>
+      <p class="city-line">{{ $e.city }}</p>
+      <p class="venue-line">{{ $e.date_note }}</p>
+    </div>
   </div>
 </header>
 
@@ -197,7 +216,7 @@
       <li class="card">
         {{- $inner := "" -}}
         {{- if $o.logo -}}
-          {{- $inner = printf `<img src="%s" alt="%s">` ($o.logo | relURL) $o.name -}}
+                    {{- $inner = printf `<img src="%s" alt="%s" style="--h: %v">` ($o.logo | relURL) $o.name ($o.hero_size | default 24) -}}
         {{- else -}}
           {{- $inner = printf `<span class="mono">[%s logo]</span>` $o.name -}}
         {{- end -}}
@@ -219,7 +238,7 @@
       <li class="card">
         {{- $inner := "" -}}
         {{- if $o.logo -}}
-          {{- $inner = printf `<img src="%s" alt="%s">` ($o.logo | relURL) $o.name -}}
+                    {{- $inner = printf `<img src="%s" alt="%s" style="--h: %v">` ($o.logo | relURL) $o.name ($o.hero_size | default 24) -}}
         {{- else -}}
           {{- $inner = printf `<span class="mono">[%s logo]</span>` $o.name -}}
         {{- end -}}
