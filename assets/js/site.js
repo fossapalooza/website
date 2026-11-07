@@ -15,17 +15,21 @@
   }
 
   // Pause button for the moving topic tapes. The choice is remembered on this device.
+  // The button and the topics section both get the is-paused class.
   var topics = document.querySelector(".topics");
-  var button = topics && topics.querySelector(".topics-pause");
-  if (!button) return;
+  var button = document.querySelector(".topics-pause");
+  if (!topics || !button) return;
   var key = "fossapalooza-topics-paused";
   var paused = false;
   try { paused = localStorage.getItem(key) === "1"; } catch (e) {}
-  topics.classList.toggle("is-paused", paused);
+  function show() {
+    topics.classList.toggle("is-paused", paused);
+    button.classList.toggle("is-paused", paused);
+  }
+  show();
   button.hidden = false;
   button.addEventListener("click", function () {
     paused = !paused;
-    topics.classList.toggle("is-paused", paused);
+    show();
     try { localStorage.setItem(key, paused ? "1" : "0"); } catch (e) {}
   });
-})();
