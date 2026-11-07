@@ -47,16 +47,22 @@ topics:
     - Sustainability
     - Tooling and automation
     - Vulnerability management
+
 # Put logo files in static/images/organizers/ and set "logo" to their path,
 # for example: logo: images/organizers/owasp.svg
+# The logos also show in white: beside the date at the top of the page on wide screens, and in
+# these sections on phones and small tablets. So use logo files with a transparent background.
+# hero_size is the logo's height beside the date, in pixels (24 if left out; the sections on
+# phones show it 1.5 times as big). Wide logos need less and tall or square ones more, so they
+# all look about the same size.
 organizers:
-  - { name: AboutCode, url: "https://aboutcode.org", logo: "images/co-organizers/AboutCode.svg" }
-  - { name: OWASP, url: "https://owasp.org/", logo: "images/co-organizers/OWASP.svg" }
-  - { name: Open Regulatory Compliance Working Group, url: "https://orcwg.org/", logo: "images/co-organizers/ORCWG.svg" }
+  - { name: AboutCode, url: "https://aboutcode.org", logo: "images/co-organizers/AboutCode.svg", hero_size: 22 }
+  - { name: OWASP, url: "https://owasp.org/", logo: "images/co-organizers/OWASP.svg", hero_size: 32 }
+  - { name: Open Regulatory Compliance Working Group, url: "https://orcwg.org/", logo: "images/co-organizers/ORCWG.svg", hero_size: 40 }
 
 # Shown in the "With partners" section, below the co-organizers. Same fields as organizers.
 partners:
-  - { name: OpenChain, url: "https://openchainproject.org/", logo: "images/partners/OpenChain.svg" }
+  - { name: OpenChain, url: "https://openchainproject.org/", logo: "images/partners/OpenChain.svg", hero_size: 19 }
   
 tickets:
   url: "https://register.fossapalooza.eu"
