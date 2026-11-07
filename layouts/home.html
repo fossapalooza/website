@@ -104,50 +104,6 @@
 </header>
 
 <main id="main">
-  <section class="wrap section" id="organizers" aria-labelledby="organizers-h">
-    <h2 id="organizers-h">Co-organized by</h2>
-    <ul class="org-grid">
-      {{- range $o := $s.organizers }}
-      <li class="card">
-        {{- $inner := "" -}}
-        {{- if $o.logo -}}
-          {{- $inner = printf `<img src="%s" alt="%s">` ($o.logo | relURL) $o.name -}}
-        {{- else -}}
-          {{- $inner = printf `<span class="mono">[%s logo]</span>` $o.name -}}
-        {{- end -}}
-        {{- if $o.url }}
-        <a class="org-tile" href="{{ $o.url }}">{{ $inner | safeHTML }}</a>
-        {{- else }}
-        <div class="org-tile">{{ $inner | safeHTML }}</div>
-        {{- end }}
-      </li>
-      {{- end }}
-    </ul>
-  </section>
- 
-  {{- with $s.partners }}
-  <section class="wrap section" id="partners" aria-labelledby="partners-h">
-    <h2 id="partners-h">With partners</h2>
-    <ul class="org-grid">
-      {{- range $o := . }}
-      <li class="card">
-        {{- $inner := "" -}}
-        {{- if $o.logo -}}
-          {{- $inner = printf `<img src="%s" alt="%s">` ($o.logo | relURL) $o.name -}}
-        {{- else -}}
-          {{- $inner = printf `<span class="mono">[%s logo]</span>` $o.name -}}
-        {{- end -}}
-        {{- if $o.url }}
-        <a class="org-tile" href="{{ $o.url }}">{{ $inner | safeHTML }}</a>
-        {{- else }}
-        <div class="org-tile">{{ $inner | safeHTML }}</div>
-        {{- end }}
-      </li>
-      {{- end }}
-    </ul>
-  </section>
-  {{- end }}
-  
   <section class="wrap section" id="tickets" aria-labelledby="tickets-h">
     <h2 id="tickets-h">Tickets</h2>
     <div class="tickets">
@@ -234,6 +190,49 @@
     </p>
     {{- end }}
   </section>
+    <section class="wrap section" id="organizers" aria-labelledby="organizers-h">
+    <h2 id="organizers-h">Co-organized by</h2>
+    <ul class="org-grid">
+      {{- range $o := $s.organizers }}
+      <li class="card">
+        {{- $inner := "" -}}
+        {{- if $o.logo -}}
+          {{- $inner = printf `<img src="%s" alt="%s">` ($o.logo | relURL) $o.name -}}
+        {{- else -}}
+          {{- $inner = printf `<span class="mono">[%s logo]</span>` $o.name -}}
+        {{- end -}}
+        {{- if $o.url }}
+        <a class="org-tile" href="{{ $o.url }}">{{ $inner | safeHTML }}</a>
+        {{- else }}
+        <div class="org-tile">{{ $inner | safeHTML }}</div>
+        {{- end }}
+      </li>
+      {{- end }}
+    </ul>
+  </section>
+ 
+  {{- with $s.partners }}
+  <section class="wrap section" id="partners" aria-labelledby="partners-h">
+    <h2 id="partners-h">With partners</h2>
+    <ul class="org-grid">
+      {{- range $o := . }}
+      <li class="card">
+        {{- $inner := "" -}}
+        {{- if $o.logo -}}
+          {{- $inner = printf `<img src="%s" alt="%s">` ($o.logo | relURL) $o.name -}}
+        {{- else -}}
+          {{- $inner = printf `<span class="mono">[%s logo]</span>` $o.name -}}
+        {{- end -}}
+        {{- if $o.url }}
+        <a class="org-tile" href="{{ $o.url }}">{{ $inner | safeHTML }}</a>
+        {{- else }}
+        <div class="org-tile">{{ $inner | safeHTML }}</div>
+        {{- end }}
+      </li>
+      {{- end }}
+    </ul>
+  </section>
+  {{- end }}
   {{- with $s.around_fosdem }}
   <section class="wrap section" id="fosdem-week" aria-labelledby="fosdem-week-h">
     <h2 id="fosdem-week-h">{{ .heading }}</h2>
