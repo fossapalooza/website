@@ -243,6 +243,9 @@ a:not([class]):focus-visible { border-radius: 6px; }
 .cfp { margin-top: 28px; background: var(--gold); color: var(--ink); padding: 36px; }
 .cfp .label { font-size: .8125rem; }
 .cfp-h { font-size: clamp(2.5rem, 4.6vw, 4rem); font-weight: 900; line-height: .95; text-transform: uppercase; letter-spacing: -.02em; margin-top: 12px; }
+/* If a word in a big heading is still too wide for its box (a very narrow phone, or a larger text size
+   setting, like Firefox on Android uses), break the word rather than let it spill out of the box. */
+.section h2, .cfp-h, .topics-card-h, .city-line { overflow-wrap: break-word; }
 .cfp-text { font-size: 1.25rem; line-height: 1.55; margin-top: 16px; max-width: 640px; font-weight: 600; }
 .cfp-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 28px; }
 .cfp-facts dt { font-size: .75rem; }
@@ -306,6 +309,7 @@ a:not([class]):focus-visible { border-radius: 6px; }
   /* Small enough that "Co-organized by", the longest heading, fits on one line. */
   .section h2 { font-size: clamp(1.75rem, 8.4vw, 2.5rem); }
   .cfp { padding: 24px; }
+  .cfp-h { font-size: clamp(1.75rem, 8.4vw, 2.5rem); }
   .schedule { padding: 4px 20px; }
   .schedule li { gap: 6px 16px; }
   /* The footer also has the "wrap" class, whose phone rule above clears its top and bottom padding, so set them again. */
@@ -374,7 +378,7 @@ a:not([class]):focus-visible { border-radius: 6px; }
   .topics-static li:not(:last-child)::after { content: ""; display: inline-block; width: 5px; height: 5px; margin: 0 .55em; border-radius: 50%; background: var(--gold); vertical-align: middle; }
   .hero-date { margin-top: auto; padding-top: 2.5vh; padding-bottom: 3vh; }
   .date-line { font-size: clamp(1.625rem, 4vh, 2.25rem); }
-  .city-line { font-size: clamp(2.5rem, 6.4vh, 3.5rem); }
+  .city-line { font-size: clamp(2.25rem, min(6.4vh, 13vw), 3.5rem); }
   .venue-line { font-size: 1rem; margin-top: 6px; }
 }
 @media (max-width: 760px) and (prefers-reduced-motion: no-preference) {
@@ -385,4 +389,20 @@ a:not([class]):focus-visible { border-radius: 6px; }
   .hero-logo img { width: min(100%, 24vh); }
   .topics { padding-top: 1.5vh; }
   .hero-date { padding-bottom: 2vh; }
+}
+/* Portrait tablets (iPad, iPad Mini, iPad Air): the logo sits above the intro there,
+   so it is drawn smaller to leave room for everything else on one screen. */
+@media (min-width: 761px) and (orientation: portrait) {
+  .hero-logo img { width: min(520px, 34vh); }
+}
+/* Very narrow phones (320px wide, like the first iPhone SE): a tighter menu so it stays on one line,
+   and slightly smaller intro text. */
+@media (max-width: 340px) {
+  .nav { column-gap: 8px; font-size: .75rem; }
+  .nav .btn { padding: 8px 10px; font-size: .6875rem; }
+  .hero-copy { font-size: .8125rem; }
+}
+/* ...and if the screen is short as well (320 by 568), a smaller logo. */
+@media (max-width: 340px) and (max-height: 600px) {
+  .hero-logo img { width: min(100%, 20vh); }
 }
