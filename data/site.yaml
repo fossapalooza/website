@@ -87,7 +87,11 @@ cfp:
   topics_note: Not on the list? Submit it anyway!
 
 sponsors:
-  text: Interested in sponsoring FOSSapalooza? Contact us for more information.
+  text: Interested in sponsoring FOSSapalooza? Download the prospectus and contact us for more information.
+  # The sponsorship prospectus, shown as a button to the left of "Contact us". Put the PDF in
+  # static/images/sponsors/ and set its path here (without "static/"). Delete both lines to hide the button.
+  prospectus: images/sponsors/FOSSapalooza-sponsorship-prospectus.pdf
+  prospectus_label: Sponsorship prospectus
 
 # Co-organizers' events in Brussels around FOSDEM, shown in the "FOSDEM week" section.
 # For each event: date, title, organizer, venue, text, and optional url (event page) and register_url.
