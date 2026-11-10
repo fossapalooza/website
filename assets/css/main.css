@@ -274,7 +274,8 @@ a:not([class]):focus-visible { border-radius: 6px; }
 
 .lead { font-size: 1.375rem; line-height: 1.5; margin-top: 20px; max-width: 640px; }
 .lead-wide { font-size: 1.25rem; max-width: none; margin-top: 14px; }
-#sponsors .btn { margin-top: 24px; }
+.sponsor-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.sponsor-links .btn { padding: 12px 20px; }
 
 .footer {
   margin-top: 110px; padding-top: 26px; padding-bottom: 44px;
