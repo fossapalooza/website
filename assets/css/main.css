@@ -165,7 +165,7 @@ a:not([class]):focus-visible { border-radius: 6px; }
    Each logo's height comes from hero_size in data/site.yaml and shrinks a little on short
    screens, so the logos stay no taller than the date beside them. */
 .hero-orgs { display: none; text-align: left; }
-.hero-orgs-group + .hero-orgs-group { margin-top: 10px; }
+.hero-orgs-group + .hero-orgs-group { margin-top: 8px; }
 .hero-orgs-label { font-size: .8125rem; color: var(--gold); }
 .hero-orgs-list { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 28px; margin-top: 6px; }
 .hero-orgs-list a { display: block; padding: 4px 0; border-radius: 4px; }
@@ -189,13 +189,18 @@ a:not([class]):focus-visible { border-radius: 6px; }
   background: var(--white); border-radius: 14px; color: var(--purple-card); text-decoration: none;
 }
 .org-tile img { max-height: 80px; width: auto; object-fit: contain; }
+/* In the tiles, each logo's height comes from hero_size too, scaled to the tile's width (cqi),
+   so the logos look about the same size as each other on every screen. Older browsers that
+   don't know cqi use the fixed size on the line before. */
+.org-tile { container-type: inline-size; }
+.org-tile img[style] { max-height: none; height: calc(var(--h) * 1.1px); height: calc(var(--h) * min(.66cqi, 1.5px)); }
 .org-tile .mono { font-size: .8125rem; text-align: center; overflow-wrap: anywhere; }
 /* Below 960px the logos aren't beside the date. They show right below the top of the page instead
    (.orgs-mobile), in white with section headings, and the Co-organized by and With partners sections
    further down are hidden, so the logos don't show twice. */
 .orgs-mobile .hero-orgs-group + .hero-orgs-group { margin-top: 56px; }
 .orgs-mobile .hero-orgs-list { gap: 22px 36px; margin-top: 28px; }
-.orgs-mobile .hero-orgs-list img { height: calc(var(--h) * 1.5px); }
+.orgs-mobile .hero-orgs-list img { height: calc(var(--h) * 1.8px); }
 @media (min-width: 960px) {
   .orgs-mobile { display: none; }
 }

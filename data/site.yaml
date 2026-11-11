@@ -52,17 +52,21 @@ topics:
 # for example: logo: images/organizers/owasp.svg
 # The logos also show in white near the top of the page: beside the date on wide screens, and right
 # below it on phones and small tablets. So use logo files with a transparent background.
-# hero_size is the logo's height beside the date, in pixels (24 if left out; phones and small
-# tablets show it 1.5 times as big). Wide logos need less and tall or square ones more, so they
-# all look about the same size.
+# hero_size sets how big each logo is, so they all look about the same size: it is the logo's
+# height beside the date, in pixels (24 if left out). Phones show it 1.8 times as big, and the
+# white tiles further down scale it to the tile width. Wide logos need less and tall or square
+# ones more. To size a new logo, compare it with the others on the page and adjust the number.
+# Add keep_colors: true to show a logo in its own colors there instead of white, for a logo
+# that turns into a plain shape in white (like the BEAR bear).
 organizers:
-  - { name: AboutCode, url: "https://aboutcode.org", logo: "images/co-organizers/AboutCode.svg", hero_size: 22 }
-  - { name: OWASP, url: "https://owasp.org/", logo: "images/co-organizers/OWASP.svg", hero_size: 32 }
-  - { name: Open Regulatory Compliance Working Group, url: "https://orcwg.org/", logo: "images/co-organizers/ORCWG.svg", hero_size: 40 }
+  - { name: AboutCode, url: "https://aboutcode.org", logo: "images/co-organizers/AboutCode.svg", hero_size: 16 }
+  - { name: OWASP, url: "https://owasp.org/", logo: "images/co-organizers/OWASP.svg", hero_size: 26 }
+  - { name: Open Regulatory Compliance Working Group, url: "https://orcwg.org/", logo: "images/co-organizers/ORCWG.svg", hero_size: 35 }
 
 # Shown in the "With partners" section, below the co-organizers. Same fields as organizers.
-partners:
-  - { name: OpenChain, url: "https://openchainproject.org/", logo: "images/partners/OpenChain.svg", hero_size: 19 }
+  - { name: OpenChain, url: "https://openchainproject.org/", logo: "images/partners/OpenChain.svg", hero_size: 15 }
+  - { name: OpenSSF, url: "https://openssf.org/", logo: "images/partners/openssf.svg", hero_size: 28 }
+  - { name: OpenSSF BEAR Working Group, url: "https://openssf.org/groups/bear/", logo: "images/partners/BEAR.svg", hero_size: 44, keep_colors: true }
   
 tickets:
   url: "https://register.fossapalooza.eu"
