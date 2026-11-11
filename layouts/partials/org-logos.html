@@ -12,8 +12,7 @@
   {{- end }}
   <ul class="hero-orgs-list">
     {{- range $o := . }}{{ with $o.logo }}
-    <li>{{ if $o.url }}<a href="{{ $o.url }}">{{ end }}<img src="{{ . | relURL }}" alt="{{ $o.name }}" style="--h: {{ $o.hero_size | default 24 }}">{{ if $o.url }}</a>{{ end }}</li>
-    {{- end }}{{ end }}
+    <li>{{ if $o.url }}<a href="{{ $o.url }}">{{ end }}<img src="{{ . | relURL }}" alt="{{ $o.name }}"{{ if $o.keep_colors }} class="keep-colors"{{ end }} style="--h: {{ $o.hero_size | default 24 }}">{{ if $o.url }}</a>{{ end }}</li>
   </ul>
 </div>
 {{- end }}
