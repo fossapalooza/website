@@ -165,12 +165,13 @@ a:not([class]):focus-visible { border-radius: 6px; }
    Each logo's height comes from hero_size in data/site.yaml and shrinks a little on short
    screens, so the logos stay no taller than the date beside them. */
 .hero-orgs { display: none; text-align: left; }
-.hero-orgs-group + .hero-orgs-group { margin-top: 14px; }
+.hero-orgs-group + .hero-orgs-group { margin-top: 10px; }
 .hero-orgs-label { font-size: .8125rem; color: var(--gold); }
 .hero-orgs-list { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 28px; margin-top: 6px; }
 .hero-orgs-list a { display: block; padding: 4px 0; border-radius: 4px; }
 .hero-orgs-list a:hover { opacity: .75; }
 .hero-orgs-list img { display: block; width: auto; height: calc(var(--h) * min(1px, .1111vh)); filter: brightness(0) invert(1); }
+.hero-orgs-list img.keep-colors { filter: none; }
 @media (min-width: 960px) {
   .hero-date { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; }
   .hero-orgs { display: block; max-width: 520px; }
