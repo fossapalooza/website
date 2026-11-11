@@ -27,10 +27,13 @@ topics:
   play: Play topics
   items:
     - Application security
+    - Belonging, Empowerment, Allyship, and Representation
     - CRA
+    - CVE
     - Community 
     - Governance
     - Cybersecurity
+    - CycloneDX
     - Data
     - Diversity, equity, inclusion, and belonging
     - License compliance
@@ -38,10 +41,12 @@ topics:
     - OSPOs
     - Open source stewards
     - Package management
+    - Package-URfossapalooza.euL
     - Policy and regulation
     - Project health
     - SBOMs
     - Security compliance
+    - SPDX
     - Standards
     - Supply chain
     - Sustainability
