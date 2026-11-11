@@ -52,12 +52,8 @@ The built page was checked on 18 October 2026:
 
 **Keeping it accessible as you edit**
 
-- **Organizer logos:** each logo's alt text is the organizer's name, taken from `name` in `data/site.yaml`. Keep the names accurate.
-- **Contact email:** set a real address in `data/site.yaml`. Until then the "Contact us" button links back to the Sponsors section, so the HTML stays valid.
-- **Code of conduct:** replace `coc_url: "#"` with the real page. A link that goes nowhere is a barrier.
-- **Hero blobs:** don't move text on top of the gold blob. White on gold is only 1.75:1, which is why that blob is hidden between about 760 and 1060px wide.
+- **Co-organizer and partner logos:** each logo's alt text is the organizer's name, taken from `name` in `data/site.yaml`. Keep the names accurate.
 - **New colour pairs:** if you add one, check it at https://webaim.org/resources/contrastchecker/ (4.5:1 for normal text).
 - **Re-checking:** after bigger changes, run the free axe DevTools or WAVE browser extension on the page, and paste the address into https://validator.w3.org/nu/.
-- **Screen readers:** these checks don't replace a real screen-reader pass. Try VoiceOver (Mac) or NVDA (Windows) once before launch.
 
 **European Accessibility Act (EAA):** Directive (EU) 2019/882 covers e-commerce services provided to consumers after 28 June 2025. Microenterprises providing services (fewer than 10 people, and no more than €2 million turnover or balance sheet) are excluded. Ticket checkout runs on pretix, so pretix's accessibility matters as well as this page's. [Directive (EU) 2019/882, the European Accessibility Act](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX%3A32019L0882)
