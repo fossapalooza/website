@@ -64,6 +64,7 @@ organizers:
   - { name: Open Regulatory Compliance Working Group, url: "https://orcwg.org/", logo: "images/co-organizers/ORCWG.svg", hero_size: 35 }
 
 # Shown in the "With partners" section, below the co-organizers. Same fields as organizers.
+partners:
   - { name: OpenChain, url: "https://openchainproject.org/", logo: "images/partners/OpenChain.svg", hero_size: 15 }
   - { name: OpenSSF, url: "https://openssf.org/", logo: "images/partners/openssf.svg", hero_size: 28 }
   - { name: OpenSSF BEAR Working Group, url: "https://openssf.org/groups/bear/", logo: "images/partners/BEAR.svg", hero_size: 44, keep_colors: true }
